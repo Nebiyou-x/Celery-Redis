@@ -1,8 +1,14 @@
 version: "3.9"
 
 services:
-  redis:
-    image: redis
+  web:
+    build: .
+    environment:
+      - REDIS_URL=${REDIS_URL}
+    ports:
+      - "10000:10000"
+    depends_on:
+      - redis
     restart: always
 
   webapp:
@@ -13,10 +19,25 @@ services:
       - "8888:8888"
     command: ["python", "./src/manage.py", "runserver", "0.0.0.0:8888"]
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+
+  
   worker:
     restart: always
     build:
       context: ./webapp
+    environment:
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      - redis
     volumes:
       - ./cats:/app/src/cats
     command: ['celery', '--workdir=./src', '-A', 'proj', 'worker']

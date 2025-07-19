@@ -2,4 +2,28 @@ services:
   - type: web
     name: django-web
     runtime: docker
-    dockerfilePath: ./webapp/Dockerfile
+    port: 10000
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: redis
+          type: redis
+          property: connectionString
+      - key: DJANGO_SETTINGS_MODULE
+        value: "proj.settings"
+      - key: DEBUG
+        value: "False"
+
+  - type: worker
+    name: celery-worker
+    runtime: docker
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: redis
+          type: redis
+          property: connectionString
+
+  - type: redis
+    name: redis
+    plan: free

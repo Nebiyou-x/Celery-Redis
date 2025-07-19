@@ -21,6 +21,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-rw^7zhbw1d*c6hpp+lcy)y0-*x#7&lv0x%ownf&!4%6i_it_do'
 
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+
+# Celery Configuration
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+
+# Cache configuration
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
