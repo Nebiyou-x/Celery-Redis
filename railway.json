@@ -1,6 +1,7 @@
 {
   "build": {
     "builder": "DOCKER",
-    "dockerCompose": true
+    "dockerCompose": true,
+    "composeFile": "docker-compose.yaml"
   }
 }
