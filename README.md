@@ -1,4 +1,5 @@
-# Juve app
+# Celery Redis
+
 Repository for practice with Celery+Redis+Docker+Django
 ___
 ## Structure
