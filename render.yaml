@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: django-web
+    runtime: docker
+    dockerfilePath: ./webapp/Dockerfile
